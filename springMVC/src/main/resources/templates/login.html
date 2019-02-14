@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" th:src="@{/js/jquery-3.0.0.min.js}"></script>
+    <title>简单登录认证</title>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function toLogin() {
+            var name = $("#name").val();
+            var password = $("#password").val();
+            $.ajax({
+                url: "/loginPost",
+                dataType: 'json',
+                data: {
+                   "username":name,
+                   "password":password
+                },
+                async: true,
+                success: function(data){
+                if(data.success){
+                    window.location.href="/";
+                }else{
+                    $("#message").text(data.message);
+                }
+            }
+        });
+        }
+
+        /*]]>*/
+    </script>
+
+</head>
+
+<body>
+<h1>简单登录认证</h1>
+<h4>
+    我是最帅的
+</h4>
+<p>账号：<input id="name"></p>
+<p>密码：<input id="password"></p>
+<button onclick="toLogin()">登录</button>
+<br/>
+<span id="message" style="color: red"></span>
+<br />
+</body>
+</html>

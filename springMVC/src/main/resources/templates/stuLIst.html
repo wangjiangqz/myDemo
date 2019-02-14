@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>学生列表</title>
+</head>
+<body>
+<table border="1" cellspacing="0" cellpadding="5">
+    <tr>
+        <td>序号</td>
+        <td>编号</td>
+        <td>姓名</td>
+        <td>性别</td>
+        <td>年龄</td>
+        <td>班级</td>
+    </tr>
+    <tr th:each="stu,status:${stuLists}">
+        <td th:text="${status.count}"/>
+        <td th:text="${stu.id} "/>
+        <td th:text="${stu.name}"/>
+        <td th:if="${stu.sex eq 'm'}" th:text="男" />
+        <td th:if="${stu.sex eq 'w'}" th:text="女" />
+        <td th:text="${stu.age}"/>
+        <td th:text="${stu.classid}"/>
+    </tr>
+</table>
+</body>
+</html>

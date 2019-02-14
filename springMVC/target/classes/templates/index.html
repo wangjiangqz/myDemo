@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>简单登录认证</title>
+</head>
+<body>
+<h1>简单登录认证</h1>
+<h4>
+    我是最帅的
+</h4>
+<h3 th:text="'登录用户：' + ${user.username}"></h3>
+<shiro:hasPermission name="add"><li>增加</li></shiro:hasPermission>
+<shiro:hasPermission name="delete"><li>删除</li></shiro:hasPermission>
+<shiro:hasPermission name="update"><li>修改</li></shiro:hasPermission>
+<shiro:hasPermission name="query"><li>查询</li></shiro:hasPermission>
+<a href="/logout">注销</a>
+<br />
+</body>
+</html>
