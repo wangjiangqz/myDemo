@@ -25,4 +25,6 @@ public class TestMybatis {
         List<stu> list = studao.findList();
         System.out.println(list);
     }
+
+
 }

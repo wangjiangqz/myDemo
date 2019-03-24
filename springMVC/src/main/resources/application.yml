@@ -20,36 +20,36 @@ spring:
 
 
 ---
-
-#开发配置
-spring:
-  profiles: dev
-
-
-  datasource:
-    url: jdbc:mysql://172.16.82.44:3306/test
-    username: root
-    password: longwin
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    # 使用druid数据源
-    type: com.alibaba.druid.pool.DruidDataSource
-
----
-
-spring:
-  dubbo:
-    application:
-      name: service-consumer
-    base-package: com.example.demo.web  # dubbo服务调用者所在的包
-    registry:
-      address: 172.16.82.42 # zookeeper注册中心的地址
-      port: 2181              # zookeeper注册中心的端口
-      protocol: zookeeper
-      subscribe: true
-    protocol:
-      name: dubbo
-      host: 172.16.82.42
-    consumer:
-      timeout: 1000
-      check: false  # 服务启动时检查被调用服务是否可用
-      retries: 2    # 服务调用重试次数
+#
+##开发配置
+#spring:
+#  profiles: dev
+#
+#
+#  datasource:
+#    url: jdbc:mysql://172.16.82.44:3306/test
+#    username: root
+#    password: longwin
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    # 使用druid数据源
+#    type: com.alibaba.druid.pool.DruidDataSource
+#
+#---
+#
+#spring:
+#  dubbo:
+#    application:
+#      name: service-consumer
+#    base-package: com.example.demo.web  # dubbo服务调用者所在的包
+#    registry:
+#      address: 172.16.82.42 # zookeeper注册中心的地址
+#      port: 2181              # zookeeper注册中心的端口
+#      protocol: zookeeper
+#      subscribe: true
+#    protocol:
+#      name: dubbo
+#      host: 172.16.82.42
+#    consumer:
+#      timeout: 1000
+#      check: false  # 服务启动时检查被调用服务是否可用
+#      retries: 2    # 服务调用重试次数
