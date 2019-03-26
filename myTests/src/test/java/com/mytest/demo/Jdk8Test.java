@@ -1,10 +1,12 @@
 package com.mytest.demo;
 
+import com.esotericsoftware.reflectasm.MethodAccess;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +27,44 @@ public class Jdk8Test
 			m++;
 		}while (m<10);
 
-		lists.forEach(o ->System.out.print(o));
+		lists.forEach(o->{
+			System.out.println(haveFun(String.valueOf(o.compareTo(50)>=0?o:0)));
+		});
 
-		lists.forEach(System.out::println);
+		lists.forEach(Jdk8Test::printTest);
 	}
 
 
+	@Test
+	public void testReflectASM(){
+		Cats cat = new Cats();
+		MethodAccess methodAccess = MethodAccess.get(Cats.class);
+		methodAccess.invoke(cat,"showCatName","lucy");
+	}
+
+	@Test
+	public void testJDKreflect(){
+		Cats cat = new Cats();
+		try
+		{
+			Method method = cat.getClass().getMethod("showCatName",String.class);
+			method.invoke(cat,"Lucky");
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+
+	public String haveFun(String s){
+		s = s+" for fun";
+		return s;
+	}
+
+	public static void printTest(Object o){
+		System.out.println(o.toString());
+
+	}
 
 }
 
