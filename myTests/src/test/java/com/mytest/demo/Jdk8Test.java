@@ -9,7 +9,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.IntSummaryStatistics;
 import java.util.List;
+import java.util.Optional;
 
 //个人对jdk8新特性的测试类
 @RunWith(SpringJUnit4ClassRunner.class) /*添加SpringJUnit支持，引入Spring-Test框架*/
@@ -32,6 +34,19 @@ public class Jdk8Test
 		});
 
 		lists.forEach(Jdk8Test::printTest);
+		System.out.println("////////");
+
+		IntSummaryStatistics statistics = lists.stream().sorted().filter(o->o%2 ==0).mapToInt((x)->x).summaryStatistics();
+		System.out.println(statistics.getCount());
+		System.out.println(statistics.getAverage());
+		System.out.println(statistics.getMax());
+		System.out.println(statistics.getMin());
+		System.out.println(statistics.getSum());
+
+
+		Integer op = Optional.ofNullable(statistics.getMax()).filter(o->o>50).map(o->o*o).get();
+		System.out.println("_______-------"+op);
+
 	}
 
 
