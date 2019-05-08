@@ -47,6 +47,15 @@
 			<artifactId>elasticsearch-rest-high-level-client</artifactId>
 			<version>6.5.4</version>
 		</dependency>
+
+		<!--es中sql转dsl-->
+		<dependency>
+			<groupId>io.github.iamazy.elasticsearch.dsl</groupId>
+			<artifactId>elasticsearch-sql</artifactId>
+			<version>6.7.1.4</version>
+			<type>pom</type>
+		</dependency>
+
 	</dependencies>
 
 	<build>

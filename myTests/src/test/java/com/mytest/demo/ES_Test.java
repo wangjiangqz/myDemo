@@ -22,10 +22,7 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.index.query.WildcardQueryBuilder;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -39,10 +36,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 //个人对ES的测试类
 @RunWith(SpringJUnit4ClassRunner.class) /*添加SpringJUnit支持，引入Spring-Test框架*/
@@ -216,24 +210,37 @@ public class ES_Test
 		//多条件组合查询
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		//分词查询
-		WildcardQueryBuilder wildcardQueryBuilder = QueryBuilders.wildcardQuery("mark","dianxin");
+		WildcardQueryBuilder wildcardQueryBuilder = QueryBuilders.wildcardQuery("activity_id","A0719031113332301226");
 		//完整匹配
-		TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("user","wangjiangqz10086");
+		TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("act_item_id","A0219031113484701518");
+		//嵌套查询
+		BoolQueryBuilder boolQueryBuilderIn = QueryBuilders.boolQuery();
+		String[] strings = {"6","7"};
+		List<String> list = Arrays.asList(strings);
+		TermsQueryBuilder termsQueryBuilderIn = QueryBuilders.termsQuery("status",list);
+		boolQueryBuilderIn.should(termsQueryBuilderIn);
+		BoolQueryBuilder boolQueryBuilderInIn = QueryBuilders.boolQuery();
+		PrefixQueryBuilder prefixQueryBuilder = QueryBuilders.prefixQuery("realname","王");
+		boolQueryBuilderInIn.mustNot(termsQueryBuilderIn);
+		boolQueryBuilderInIn.must(prefixQueryBuilder);
+		boolQueryBuilderIn.should(boolQueryBuilderInIn);
 		//should表示或
 		boolQueryBuilder.should(wildcardQueryBuilder);
 		boolQueryBuilder.should(termQueryBuilder);
+		boolQueryBuilder.must(boolQueryBuilderIn);
 		//添加查询个数限制
 		searchSourceBuilder.from(0);
-		searchSourceBuilder.size(5);
+		searchSourceBuilder.size(50);
 		//添加列的限制
-		String[] includs = {"user","mark","wish"};
-		String[] excluds = {"postDate"};
+		String[] includs = {"act_group_id","act_item_id","activity_id","adult_cnt","realname","status"};
+		String[] excluds = {"child_cnt"};
 		searchSourceBuilder.fetchSource(includs,excluds);
 		//添加排序
-		SortBuilder sortBuilder = SortBuilders.fieldSort("postDate").order(SortOrder.ASC);
+		SortBuilder sortBuilder = SortBuilders.fieldSort("create_date").order(SortOrder.DESC);
 		searchSourceBuilder.sort(sortBuilder);
 		//把组合条件添加为查询条件
 		searchSourceBuilder.query(boolQueryBuilder);
+		request.indices("maitao_orders");
 		request.source(searchSourceBuilder);
 
 
@@ -241,5 +248,6 @@ public class ES_Test
 		SearchHits hits = response.getHits();
 		Arrays.stream(hits.getHits()).map(p->p.getSourceAsString()).forEach(System.out::println);
 	}
+
 }
 

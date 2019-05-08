@@ -81,5 +81,19 @@ public class Jdk8Test
 
 	}
 
+	@Test
+	public void testWx(){
+		int s = 707829217;
+		int x = 2;
+		while (x < s){
+			if(s%x == 0){
+				System.out.println(x);
+				break;
+			}else{
+				x++;
+			}
+		}
+	}
+
 }
 
