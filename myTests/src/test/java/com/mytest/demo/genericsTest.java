@@ -1,13 +1,13 @@
 package com.mytest.demo;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-//泛型的测试类
-@RunWith(SpringJUnit4ClassRunner.class) /*添加SpringJUnit支持，引入Spring-Test框架*/
-@SpringBootTest(classes = MyTest.class) /*指定Springboot启动类启动*/
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
 public class genericsTest
 {
 	public <T> String showValue(T t){
@@ -43,6 +43,23 @@ public class genericsTest
 		Double[] doubles = {1.3,2.6,99.3,42.3,88.5};
 		System.out.println(findMax(ints));
 		System.out.println(findMax(doubles));
+	}
+
+	public void getFirst(List<?> list){
+		System.out.println(list.get(0));
+	}
+
+	@Test
+	public void testFirst(){
+		List<String> list = new ArrayList<>();
+		list.add("Java");
+		list.add("Php");
+		list.add("Ruby");
+		getFirst(list);
+		list = list.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+		getFirst(list);
+		list = list.stream().sorted().collect(Collectors.toList());
+		getFirst(list);
 	}
 }
 

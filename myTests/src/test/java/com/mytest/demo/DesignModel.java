@@ -15,7 +15,7 @@ public class DesignModel
     public void 原型模式() throws CloneNotSupportedException{
         Car car = new Car("Honda","Japan","170000");
         car.show();
-        Car car1 = (Car) car.clone();
+        Car car1 = car.clone();
         car1.setName("Toyota");
         car1.setPrice("160000");
         car1.show();
