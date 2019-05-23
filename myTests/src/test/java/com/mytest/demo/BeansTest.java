@@ -2,6 +2,7 @@ package com.mytest.demo;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mytest.demo.Model.Router;
+import com.mytest.demo.utils.Utils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,7 +63,7 @@ public class BeansTest
             for (int i = 1;i <= count;i++){
                 String cloName = resultSetMetaData.getColumnName(i);
                 Object value = set.getObject(cloName);
-                BeanUtils.setProperty(router,changeType2(cloName),value);
+                BeanUtils.setProperty(router,Utils.changeType(cloName),value);
 
             }
             resultList.add(router);
@@ -101,34 +102,10 @@ public class BeansTest
         }
     }
 
-    /**
-     * author wj
-     * @param string
-     * 采用拆分成字符串数组的方式转换成驼峰型的字符串
-     * @return
-     */
-    private String changeType2(String string){
-        if (string != null && !string.equals("")){
-            String[] strings = string.split("_");
-            if (strings.length > 1){
-                for (int i=1;i<strings.length;i++){
-                    strings[i] = strings[i].substring(0,1).toUpperCase() + strings[i].substring(1);
-                }
-            }
-            StringBuilder builder = new StringBuilder();
-            for (String str : strings){
-                builder.append(str);
-            }
-            return builder.toString();
-        }else {
-            return "";
-        }
-    }
-
 
     @Test
     public void changeTypeTest(){
-        System.out.println(changeType2("ee_rr"));
+        System.out.println(Utils.changeType("ee_rr"));
 
     }
 }
