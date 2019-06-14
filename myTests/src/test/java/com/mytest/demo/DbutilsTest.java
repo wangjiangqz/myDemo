@@ -166,7 +166,7 @@ public class DbutilsTest
             stringBuilder.append("import org.springframework.data.jpa.repository.JpaRepository;\n");
             stringBuilder.append("import org.springframework.stereotype.Repository;\n\n");
 
-            stringBuilder.append("@Repository(\"").append(s).append("\")\n");
+            stringBuilder.append("@Repository(\"").append(Utils.changeType(s)).append("Repository\")\n");
             stringBuilder.append("public interface ").append(pathNameEnd).append(" extends JpaRepository<")
                     .append(Utils.changeType(s).substring(0,1).toUpperCase() + Utils.changeType(s).substring(1)).append(", String> {\n\n");
             stringBuilder.append("}\n");
