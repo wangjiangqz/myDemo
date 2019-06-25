@@ -1,7 +1,9 @@
 package com.mytest.demo.Model;
 
+import java.io.Serializable;
+
 //汽车类，用于测试原型模式
-public class Car implements Cloneable
+public class Car implements Cloneable , Serializable
 {
     private String name;
     private String madeCountry;

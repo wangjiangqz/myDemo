@@ -1,6 +1,7 @@
 package com.mytest.demo;
 
 import com.esotericsoftware.reflectasm.MethodAccess;
+import com.mytest.demo.Model.Car;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,10 +9,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.IntSummaryStatistics;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 //个人对jdk8新特性的测试类
 @RunWith(SpringJUnit4ClassRunner.class) /*添加SpringJUnit支持，引入Spring-Test框架*/
@@ -81,19 +80,26 @@ public class Jdk8Test
 
 	}
 
+	//测试stream中的groupingBy方法，很实用
 	@Test
-	public void testWx(){
-		int s = 707829217;
-		int x = 2;
-		while (x < s){
-			if(s%x == 0){
-				System.out.println(x);
-				break;
-			}else{
-				x++;
-			}
-		}
+	public void testGroup(){
+		Car motor1 = new Car("zhangsan", "beijing", "10");
+		Car motor2 = new Car("zhangsan", "beijing", "20");
+		Car motor3 = new Car("lisi", "shanghai", "30");
+		List<Car> list = new ArrayList<Car>();
+		list.add(motor1);
+		list.add(motor2);
+		list.add(motor3);
+		Map<String, List<Car>> collect = list.stream().collect(Collectors.groupingBy(o -> groupFilter(o)));
+		System.out.println(collect);
+		Map<String, Long> size = list.stream().collect(Collectors.groupingBy(o -> groupFilter(o),Collectors.counting()));
+		System.out.println(size);
 	}
+
+	public String groupFilter(Car car){
+		return car.getName() + "&&" + car.getMadeCountry();
+	}
+
 
 }
 

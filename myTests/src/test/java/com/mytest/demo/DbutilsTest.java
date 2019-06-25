@@ -43,11 +43,13 @@ public class DbutilsTest
      */
     @Test
     public void testEasyQuery() throws SQLException{
-        QueryRunner queryRunner = new QueryRunner(druidDataSource);
-
+        QueryRunner queryRunner = new QueryRunner();
+        Connection connection = druidDataSource.getConnection();
+        connection.setAutoCommit(false);
         String sql = "insert into router values(0,0,0,null,?)";
         //sql中的变量可以在这里替换
-        int update = queryRunner.update(sql,new Date());
+        int update = queryRunner.update(connection,sql,new Date());
+        connection.commit();
         System.out.println(update == 1 ? "执行成功！" : "执行失败哟~");
 
     }
@@ -113,7 +115,7 @@ public class DbutilsTest
     public void writeSomeThing() throws SQLException{
         ResultSetHandler<List<Columns>> stringSetHandler = new BeanListHandler<>(Columns.class);
         QueryRunner queryRunner = new QueryRunner(druidDataSource);
-        String colSql = "SHOW FULL COLUMNS from mto_order_statis";
+        String colSql = "SHOW FULL COLUMNS from mto_biz_ccard_item";
         List<Columns> colnums = queryRunner.query(colSql,stringSetHandler);
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0;i<colnums.size();i++){
@@ -177,4 +179,6 @@ public class DbutilsTest
             bw.close();
         }
     }
+
+
 }

@@ -1,6 +1,9 @@
 package com.mytest.demo.Model;
 
+import org.springframework.stereotype.Component;
+
 //摩托车制造的抽象类
+@Component
 public abstract class MotorBuilder
 {
     protected Motor motor = new Motor();
