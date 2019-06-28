@@ -74,6 +74,12 @@
 			<type>pom</type>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.14</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
