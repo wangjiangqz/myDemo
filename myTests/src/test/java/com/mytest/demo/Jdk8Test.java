@@ -100,6 +100,5 @@ public class Jdk8Test
 		return car.getName() + "&&" + car.getMadeCountry();
 	}
 
-
 }
 
