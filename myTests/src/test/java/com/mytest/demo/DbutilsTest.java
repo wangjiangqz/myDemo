@@ -115,7 +115,7 @@ public class DbutilsTest
     public void writeSomeThing() throws SQLException{
         ResultSetHandler<List<Columns>> stringSetHandler = new BeanListHandler<>(Columns.class);
         QueryRunner queryRunner = new QueryRunner(druidDataSource);
-        String colSql = "SHOW FULL COLUMNS from mto_biz_ccard_item";
+        String colSql = "SHOW FULL COLUMNS from mto_pay_detail";
         List<Columns> colnums = queryRunner.query(colSql,stringSetHandler);
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0;i<colnums.size();i++){
@@ -131,6 +131,8 @@ public class DbutilsTest
             }else if (coco.getType().startsWith("bigin")){
                 stringBuilder.append("Integer ");
             }else if (coco.getType().startsWith("date")){
+                stringBuilder.append("Date ");
+            }else if (coco.getType().startsWith("time")){
                 stringBuilder.append("Date ");
             }else if (coco.getType().startsWith("var")){
                 stringBuilder.append("String ");

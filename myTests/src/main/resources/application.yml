@@ -2,12 +2,12 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.1.23:3306/maitao
-    username: root
-    password: maitao108dev
-#    url: jdbc:mysql://106.15.88.243:3306/maitao
-#    username: itother
-#    password: iRsMI5MzfQLHdt2H
+#    url: jdbc:mysql://192.168.1.23:3306/maitao
+#    username: root
+#    password: maitao108dev
+    url: jdbc:mysql://106.15.88.243:3306/maitao
+    username: itother
+    password: iRsMI5MzfQLHdt2H
     type: com.alibaba.druid.pool.DruidDataSource
     time-between-eviction-runs-millis: 6000
     initial-size: 3

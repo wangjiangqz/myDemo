@@ -56,7 +56,7 @@ public class IOTest
 
     }
 
-    public String code(String coco) {
+    public static String code(String coco) {
         int[] map = new int[]{3, 7, 9, 4, 1, 6, 0, 5, 2, 8};
         int orderCode = Integer.valueOf(coco);
         int[] digits = new int[8];
@@ -78,9 +78,18 @@ public class IOTest
 
     }
 
+    public static void main(String[] args) {
+        System.out.println(code("9607055"));
+
+    }
+
     @Autowired
     private DataSource druidDataSource;
 
+    /**
+     * 用来修复买券订单，券码缺失的bug
+     * @throws Exception
+     */
     @Test
     public void getCode() throws Exception{
         FileWriter fileWriter = new FileWriter("/Users/wangjiangqz/Documents/sql.sql",true);
@@ -91,7 +100,7 @@ public class IOTest
         stringBuilder.append("o.order_id as orderId, o.is_sale_data as isSaleData,o.activity_id as activityId,o.act_group_id as actGroupId,o.user_id as userId,o.total_fee as totalFee,o.act_item_id as actItemId,g.groupon_code as grouponCode,o.order_code as orderCode,o.order_time as orderTime");
         stringBuilder.append(" FROM orders o LEFT JOIN groupon g ON o.order_id = g.order_id \n" +
                 "WHERE\n" +
-                "\to.act_item_id = 'A0219061015562501785' AND o.order_id not in  ('O08190614121736HDUSU') \n"+
+                "\to.act_item_id = 'A0219062611320101758' AND o.order_id not in  ('O08190629124924OZVXS') \n"+
                 "\tAND o.`status` = 6 \t\n" +
                 "ORDER BY\n" +
                 "\to.user_id,o.order_id DESC");
@@ -124,10 +133,10 @@ public class IOTest
                     .append(o1.getActivityId())
                     .append("','")
                     .append(o1.getActGroupId())
-                    .append("',0,'O0919053019015501943','")
+                    .append("',0,'O0919052910383201586','")
                     .append(o1.getActItemId())
                     .append("','")
-                    .append("A0419061015562501786")
+                    .append("A0419062611320101759")
                     .append("','")
                     .append(o1.getTotalFee())
                     .append("','")
@@ -144,6 +153,10 @@ public class IOTest
         fileWriter.close();
     }
 
+    /**
+     * 用来修复券表中买券订单编号与主订单编号相同的bug
+     * @throws Exception
+     */
     @Test
     public void changeCode() throws Exception {
         FileWriter fileWriter = new FileWriter("/Users/wangjiangqz/Documents/changeCode.sql", true);
@@ -166,6 +179,74 @@ public class IOTest
                 ioBuilder.append("UPDATE groupon set groupon_order_id = '" + grouponIdsForUpdate.get(i)[0] + "' where groupon_code = '" + grouponCodesForUpdate.get(i)[0] + "';\n");
             }
         }
+        fileWriter.write(ioBuilder.toString());
+        fileWriter.close();
+    }
+
+    /**
+     * 用来修复团购券酒店连住子订单券码不一致的bug
+     * @throws Exception
+     */
+    @Test
+    public void updateOrders() throws Exception {
+        FileWriter fileWriter = new FileWriter("/Users/wangjiangqz/Documents/updateOrders.sql", true);
+        ResultSetHandler<List<Orders>> resultSetHandler = new BeanListHandler<>(Orders.class);
+        ArrayListHandler resultSet = new ArrayListHandler();
+        QueryRunner queryRunner = new QueryRunner(druidDataSource);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SELECT\n" +
+                "\tgroupon_code as grouponCode,\n" +
+                "\tbooking_order_id as orderId\n" +
+                "FROM\n" +
+                "\tgroupon g \n" +
+                "WHERE\n" +
+                "\tg.order_id IN (\n" +
+                "\tSELECT\n" +
+                "\t\torder_id \n" +
+                "\tFROM\n" +
+                "\t\tgroupon \n" +
+                "\tWHERE\n" +
+                "\t\tgroupon_code IN (\n" +
+                "\t\tSELECT\n" +
+                "\t\t\tgroupon_code \n" +
+                "\t\tFROM\n" +
+                "\t\t\torders \n" +
+                "\t\tWHERE\n" +
+                "\t\t\torder_type = 11 \n" +
+                "\t\t\tAND STATUS IN ( 1, 6, 8 ) \n" +
+                "\t\t\tAND pay_time > '2019-05-01' \n" +
+                "\t\t\tAND pay_time < '2019-08-01' \n" +
+                "\t\t\tAND groupon_code IS NOT NULL \n" +
+                "\t\t\tGROUP BY groupon_code HAVING count( * ) > 1 \n" +
+                "\t\t) \n" +
+                "\t) \n" +
+                "\tAND g.booking_order_id is not NULL\n" +
+                "\tAND g.groupon_code NOT IN (\n" +
+                "\tSELECT\n" +
+                "\t\tgroupon_code \n" +
+                "\tFROM\n" +
+                "\t\torders \n" +
+                "\tWHERE\n" +
+                "\t\torder_type = 11 \n" +
+                "\t\tAND STATUS IN ( 1, 6, 8 ) \n" +
+                "\t\tAND pay_time > '2019-05-01' \n" +
+                "\t\tAND pay_time < '2019-08-01' \n" +
+                "\t\tAND groupon_code IS NOT NULL \n" +
+                "\t\tGROUP BY groupon_code HAVING count( * ) > 1 \n" +
+                "\t)");
+        String sql = stringBuilder.toString();
+        List<Orders> list = queryRunner.query(sql,resultSetHandler);
+        StringBuilder ioBuilder = new StringBuilder();
+        for (Orders o : list) {
+            StringBuilder grouponCodes = new StringBuilder();
+            grouponCodes.append("SELECT o.groupon_code from orders o where o.order_id = '" + o.getOrderId() +"' AND o.order_type =11;\n");
+            List<Object[]> grouponCodesForUpdate = queryRunner.query(grouponCodes.toString(), resultSet);
+            System.out.println(grouponCodes.toString());
+            if (grouponCodesForUpdate.size() >0 && o.getGrouponCode().equals(grouponCodesForUpdate.get(0)[0])){
+                continue;
+            }
+            ioBuilder.append("UPDATE orders set groupon_code = '" + o.getGrouponCode() + "' where order_id = '" + o.getOrderId() + "';\n");
+            }
         fileWriter.write(ioBuilder.toString());
         fileWriter.close();
     }

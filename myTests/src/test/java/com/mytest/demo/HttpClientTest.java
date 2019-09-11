@@ -43,17 +43,17 @@ public class HttpClientTest
     public void httpTest(){
         QueryRunner queryRunner = new QueryRunner(druidDataSource);
         ArrayListHandler resultSetHandler = new ArrayListHandler();
-        String sql = "select order_id from orders order by order_id desc limit ? , ?";
+        String sql = "select order_id from orders where user_id = 'U0618032816081104826'";
         Integer begin = 0;
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
         try {
-            while (true){
-                List<Object[]> objects = queryRunner.query(sql, resultSetHandler,begin,begin + 100);
-                if (objects.size() == 0){
-                    break;
-                }else {
-                    begin += 100;
-                }
+//            while (true){
+                List<Object[]> objects = queryRunner.query(sql, resultSetHandler);
+//                if (objects.size() == 0){
+//                    break;
+//                }else {
+//                    begin += 100;
+//                }
                 System.out.println("当前进度 : " + begin);
                 for (Object[] order : objects){
                     if (order.length > 0){
@@ -65,7 +65,7 @@ public class HttpClientTest
                         System.out.printf("submit#get method return - %s\n", submit.get());
 
                     }
-                }
+//                }
             }
             fixedThreadPool.shutdown();
             try {
@@ -90,7 +90,7 @@ public class HttpClientTest
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("orderId",orderId));
             uri = new URIBuilder().setScheme("http")
-                    .setHost("192.168.1.23")
+                    .setHost("127.0.0.1")
                     .setPort(8014)
                     .setPath("/rest_order/transferAndSaveToEs")
                     .setParameters(params)

@@ -1,6 +1,7 @@
 package com.mytest.demo;
 
 import com.esotericsoftware.reflectasm.MethodAccess;
+import com.mytest.demo.Model.A;
 import com.mytest.demo.Model.Car;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,6 +99,12 @@ public class Jdk8Test
 
 	public String groupFilter(Car car){
 		return car.getName() + "&&" + car.getMadeCountry();
+	}
+
+	@Test
+	public void testFactory(){
+		FactoryBuilder factoryBuilder = new ChildBuilderA(new A());
+		factoryBuilder.doSomeThing();
 	}
 
 }
