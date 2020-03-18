@@ -3,6 +3,7 @@ package com.mytest.demo;
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.mytest.demo.Model.A;
 import com.mytest.demo.Model.Car;
+import com.mytest.demo.Model.Motor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -105,6 +106,17 @@ public class Jdk8Test
 	public void testFactory(){
 		FactoryBuilder factoryBuilder = new ChildBuilderA(new A());
 		factoryBuilder.doSomeThing();
+	}
+
+	@Test
+	public void testClassLoader(){
+		Motor motor = new Motor();
+		ClassLoader classLoader = motor.getClass().getClassLoader();
+		System.out.println(classLoader);
+		ClassLoader classLoader1 = classLoader.getParent();
+		System.out.println(classLoader1);
+		ClassLoader classLoader2 = classLoader1.getParent();
+		System.out.println(classLoader2);
 	}
 
 }

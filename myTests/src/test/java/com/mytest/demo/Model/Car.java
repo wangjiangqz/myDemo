@@ -9,6 +9,8 @@ public class Car implements Cloneable , Serializable
     private String madeCountry;
     private String price;
 
+    public Car(){}
+
     public Car clone() throws CloneNotSupportedException{
         System.out.println("复制汽车成功。");
         return (Car)super.clone();
@@ -48,7 +50,12 @@ public class Car implements Cloneable , Serializable
         System.out.println("汽车信息如下：品牌" + name +",产地"+madeCountry +",价格"+price+"元");
     }
 
-    public Car(String name,String madeCountry,String price){
+    @Override
+    public String toString() {
+        return "汽车信息如下：品牌" + name +",产地"+madeCountry +",价格"+price+"元";
+    }
+
+    public Car(String name, String madeCountry, String price){
         this.name = name;
         this.madeCountry = madeCountry;
         this.price = price;

@@ -41,7 +41,7 @@ public class loginController
     @RequestMapping("/loginPost")
     @ResponseBody
     public Map loginUser(String username, String password, HttpSession session) {
-        UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(username,password);
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username,password);
         Subject subject = SecurityUtils.getSubject();
         Map map = new HashMap();
         try {
