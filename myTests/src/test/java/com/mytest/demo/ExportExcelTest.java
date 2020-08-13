@@ -6,8 +6,10 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -109,36 +111,36 @@ public class ExportExcelTest
         //设置字体大小
         font.setFontHeightInPoints((short)11);
         //字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        font.setBold(true);
         //字体名称
         font.setFontName("Courier New");
         //设置样式
         HSSFCellStyle style = workbook.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLUE.getIndex());
         //设置底边框
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style.setBorderBottom(BorderStyle.THIN);
         //设置底边框颜色
-        style.setBottomBorderColor(HSSFColor.BLACK.index);
+        style.setBottomBorderColor(IndexedColors.BLACK.index);
         //设置左边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style.setBorderLeft(BorderStyle.THIN);
         //设置左边框颜色
-        style.setLeftBorderColor(HSSFColor.BLACK.index);
+        style.setLeftBorderColor(IndexedColors.BLACK.index);
         //设置右边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style.setBorderRight(BorderStyle.THIN);
         //设置右边框颜色
-        style.setRightBorderColor(HSSFColor.BLACK.index);
+        style.setRightBorderColor(IndexedColors.BLACK.index);
         //设置顶边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style.setBorderTop(BorderStyle.THIN);
         //设置顶边框颜色
-        style.setTopBorderColor(HSSFColor.BLACK.index);
+        style.setTopBorderColor(IndexedColors.BLACK.index);
         //在样式中使用字体
         style.setFont(font);
         //设置自动换行
         style.setWrapText(false);
         //设置水平对齐的样式为居中对齐
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
         //设置垂直对齐的样式为居中对齐
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
 
@@ -153,36 +155,36 @@ public class ExportExcelTest
         //设置字体大小
         font.setFontHeightInPoints((short)8);
         //字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+        font.setBold(false);
         //字体名称
         font.setFontName("Courier New");
         //设置样式
         HSSFCellStyle style = workbook.createCellStyle();
         style.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
         //设置底边框
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style.setBorderBottom(BorderStyle.THIN);
         //设置底边框颜色
-        style.setBottomBorderColor(HSSFColor.BLACK.index);
+        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
         //设置左边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style.setBorderLeft(BorderStyle.THIN);
         //设置左边框颜色
-        style.setLeftBorderColor(HSSFColor.BLACK.index);
+        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
         //设置右边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style.setBorderRight(BorderStyle.THIN);
         //设置右边框颜色
-        style.setRightBorderColor(HSSFColor.BLACK.index);
+        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
         //设置顶边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style.setBorderTop(BorderStyle.THIN);
         //设置顶边框颜色
-        style.setTopBorderColor(HSSFColor.BLACK.index);
+        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
         //在样式中使用字体
         style.setFont(font);
         //设置自动换行
         style.setWrapText(false);
         //设置水平对齐的样式为居中对齐
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
         //设置垂直对齐的样式为居中对齐
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
 

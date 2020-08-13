@@ -80,7 +80,7 @@ public class IOTest {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(code("9607055"));
+		System.out.println(code("12082679"));
 		
 	}
 	
